@@ -1,6 +1,6 @@
 package org.kyrsjo.givtv.test;
 
-import org.kyrsjo.givtv.backend.*;;
+import org.kyrsjo.givtv.backend.*;
 
 
 class TestTuneInterface {
