@@ -217,6 +217,9 @@ public class TuneInterface {
 			Process ivtv_tune = Runtime.getRuntime().exec("ivtv-tune --device=" + videodevice + " " + args);
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(ivtv_tune.getInputStream()));
 			
+
+			ivtv_tune.waitFor();
+
 			//Capture the output
 			boolean read_continue = true;
 			while (read_continue) {
@@ -239,6 +242,11 @@ public class TuneInterface {
 		}
 		catch (IOException error) {
 			error.printStackTrace();
+			System.exit(-1);
+			return null;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			System.exit(-1);
 			return null;
 		}
