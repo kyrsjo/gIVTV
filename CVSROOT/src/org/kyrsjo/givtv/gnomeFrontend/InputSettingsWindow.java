@@ -6,6 +6,8 @@ import org.gnu.gnome.App;
 
 class InputSettingsWindow {
 	
+	
+	
 	App inputSettingsWindow = null;
 	
 	SimpleList channellist = new SimpleList();
@@ -23,29 +25,28 @@ class InputSettingsWindow {
 				return false;
 			}
 		});
-		/*VBox mainbox = new VBox(false,0);
-		inputSettingsWindow.setContent(mainbox);
 		
-		mainbox.packStart(channellist);
-		
-		HButtonBox uppndown = new HButtonBox();
-		Button upchannel = new Button(GtkStockItem.GO_UP);
-		Button downchannel = new Button(GtkStockItem.GO_DOWN);
-		uppndown.packStart(upchannel);
-		uppndown.packStart(downchannel);
-		mainbox.packStart(uppndown);
-		*/
-		Table maintable = new Table(5,1,true);
+		Table maintable = new Table(40,2, false);
 		inputSettingsWindow.setContent(maintable);
 		
-		maintable.attach(channellist,0,1,0,3);
+		maintable.attach(channellist, 0,2, 0,35); //, AttachOptions.SHRINK, AttachOptions.SHRINK, 0,0);
 		
-		HButtonBox uppndown = new HButtonBox();
-		Button upchannel = new Button(GtkStockItem.GO_UP);
-		Button downchannel = new Button(GtkStockItem.GO_DOWN);
-		uppndown.packStart(upchannel);
-		uppndown.packStart(downchannel);
-		maintable.attach(uppndown, 0, 1, 3, 4);
+		Button upchannel	= new Button(GtkStockItem.GO_UP);
+		Button downchannel	= new Button(GtkStockItem.GO_DOWN);
+		maintable.attach (upchannel,		0,1, 35,36, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		maintable.attach (downchannel,		1,2, 35,36, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		
+		Button addbutton		= new Button (GtkStockItem.ADD);
+		Button searchbutton		= new Button (GtkStockItem.FIND);
+		Button propertiesbutton	= new Button (GtkStockItem.PROPERTIES);
+		maintable.attach (addbutton,		0,2, 36,37, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		maintable.attach (propertiesbutton, 0,2, 37,38, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		maintable.attach (searchbutton,		0,2, 38,39, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		
+		Button closebutton		= new Button (GtkStockItem.CLOSE);
+		maintable.attach (closebutton,		0,2, 39,40, AttachOptions.FILL, AttachOptions.SHRINK, 0,0);
+		
+		
 	}
 	
 	public void show() {
