@@ -1,31 +1,39 @@
 package org.kyrsjo.givtv.gnomeFrontend;
 
+import org.gnu.gtk.*;
+import org.gnu.gtk.event.*;
 import org.gnu.gnome.App;
-import org.gnu.gtk.Button;
-import org.gnu.gtk.Gtk;
-import org.gnu.gtk.GtkStockItem;
-import org.gnu.gtk.HButtonBox;
-import org.gnu.gtk.Label;
-import org.gnu.gtk.SimpleList;
-import org.gnu.gtk.VBox;
-import org.gnu.gtk.VButtonBox;
-import org.gnu.gtk.event.ButtonEvent;
-import org.gnu.gtk.event.ButtonListener;
-import org.gnu.gtk.event.LifeCycleEvent;
-import org.gnu.gtk.event.LifeCycleListener;
+//import org.gnu.gnome.Program;
+import org.kyrsjo.givtv.backend.*;
 
 class MainWindow {
-	private App givtv					= null;
+	private App						givtv				= null;
+	
 	private InputSettingsWindow		inputsettingswindow	= new InputSettingsWindow();
 	private RecordWindow			recordwindow		= new RecordWindow();
+	private ChannelMap				channelmap			= null;
 	
-	MainWindow() {
+	private SimpleList				channellist			= new SimpleList ();
+	
+	private TuneInterface			tuner;
+	private MplayerInterface		mplayer;
+	
+	MainWindow(ChannelMap channelmap) {
+		this.channelmap = channelmap;
+		
 		createMainWindow();
 		createView();
+		
+		populateChannels();
+		
+		tuner	= new TuneInterface ("/dev/video0");
+		mplayer = new MplayerInterface();
+		
 	}
 	
 	public void show () {
 		givtv.showAll();
+		mplayer.startMplayer("/dev/video0");
 	}
 	
 	private void createMainWindow() {
@@ -45,7 +53,6 @@ class MainWindow {
 		
 		Label		channellabel = new Label ("Select channel:");
 		mainbox.packStart(channellabel, false, false, 0);
-		SimpleList	channellist = new SimpleList ();
 		mainbox.packStart(channellist, true, true, 0);
 		
 		HButtonBox	uppndown	= new HButtonBox();
@@ -90,9 +97,16 @@ class MainWindow {
 		});
 	}
 	
+	private void populateChannels() {
+		channelmap.printMap();
+		for (int i = 0; i < channelmap.size(); i++) {
+			channellist.addEnd(channelmap.getChannel(i).getName());
+		}
+	}
 	
 	private boolean shutdown() {
 		Gtk.mainQuit();
+		mplayer.stopMplayer();
 		return false;
 	}
 }
