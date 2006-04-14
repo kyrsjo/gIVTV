@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.kyrsjo.givtv.gnomeFrontend;
+package net.sourceforge.givtv.gnomeFrontend;
 
 import java.util.ArrayList;
 

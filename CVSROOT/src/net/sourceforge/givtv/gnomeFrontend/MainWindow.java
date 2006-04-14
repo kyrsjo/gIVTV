@@ -1,39 +1,41 @@
-package org.kyrsjo.givtv.gnomeFrontend;
+package net.sourceforge.givtv.gnomeFrontend;
+
+import net.sourceforge.givtv.backend.*;
 
 import org.gnu.gtk.*;
 import org.gnu.gtk.event.*;
 import org.gnu.gnome.App;
 //import org.gnu.gnome.Program;
-import org.kyrsjo.givtv.backend.*;
 
 class MainWindow {
+	private Givtv					mainprog;
+	private TuneInterface			tuner;
+	
 	private App						givtv				= null;
 	
 	private InputSettingsWindow		inputsettingswindow	= new InputSettingsWindow();
 	private RecordWindow			recordwindow		= new RecordWindow();
 	private ChannelMap				channelmap			= null;
 	
-	private SimpleList				channellist			= new SimpleList ();
+	private TreeView				channellistWidget	= new TreeView ();
+	private ListStore				channellist;
+
 	
-	private TuneInterface			tuner;
-	private MplayerInterface		mplayer;
-	
-	MainWindow(ChannelMap channelmap) {
+	MainWindow(ChannelMap channelmap, Givtv givtv, TuneInterface tuner) {
+		
+		this.mainprog   = givtv;
 		this.channelmap = channelmap;
+		this.tuner		= tuner;
 		
 		createMainWindow();
 		createView();
 		
-		populateChannels();
-		
-		tuner	= new TuneInterface ("/dev/video0");
-		mplayer = new MplayerInterface();
-		
+		populateChannels();	
 	}
 	
 	public void show () {
 		givtv.showAll();
-		mplayer.startMplayer("/dev/video0");
+		
 	}
 	
 	private void createMainWindow() {
@@ -53,7 +55,7 @@ class MainWindow {
 		
 		Label		channellabel = new Label ("Select channel:");
 		mainbox.packStart(channellabel, false, false, 0);
-		mainbox.packStart(channellist, true, true, 0);
+		mainbox.packStart(channellistWidget, true, true, 0);
 		
 		HButtonBox	uppndown	= new HButtonBox();
 		Button		uppbutton	= new Button(GtkStockItem.GO_UP);
@@ -73,6 +75,7 @@ class MainWindow {
 		buttonrow.packStart(closebutton, true, true, 0);
 		mainbox.packStart(buttonrow, false, true, 0);
 		
+		//channellist.addListener();
 		
 		recordbutton.addListener(new ButtonListener() {
 			public void buttonEvent(ButtonEvent arg0) {
@@ -97,16 +100,31 @@ class MainWindow {
 		});
 	}
 	
+	/**Initiate or update the channellist widget,
+	 * and tune to the first channel if there are any channels
+	 * 
+	 */
 	private void populateChannels() {
-		channelmap.printMap();
+		
+		//Setup the channellist widget
+		DataColumnString[] columns = new DataColumnString[1];
+		columns[0] = new DataColumnString ();
+		channellist = new ListStore(columns);
+		channellistWidget.setModel(channellist);
 		for (int i = 0; i < channelmap.size(); i++) {
-			channellist.addEnd(channelmap.getChannel(i).getName());
+			TreeIter foo = channellist.appendRow();
+			System.out.println(channelmap.getChannel(i).getName());
+			channellist.setValue (foo, columns[0], channelmap.getChannel(i).getName());
+		}
+		
+		//Tune
+		if (channelmap.size() > 0) {
+			tuner.setChannel_current(channelmap.getChannel(0).getChannel());
 		}
 	}
 	
 	private boolean shutdown() {
-		Gtk.mainQuit();
-		mplayer.stopMplayer();
+		mainprog.shutdown();
 		return false;
 	}
 }

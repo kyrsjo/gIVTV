@@ -1,4 +1,4 @@
-package org.kyrsjo.givtv.gnomeFrontend;
+package net.sourceforge.givtv.gnomeFrontend;
 
 import org.gnu.gtk.*;
 import org.gnu.gtk.event.*;

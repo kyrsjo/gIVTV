@@ -1,6 +1,6 @@
-package org.kyrsjo.givtv.test;
+package net.soruceforge.givtv.test;
 
-import org.kyrsjo.givtv.backend.*;
+import net.sourceforge.givtv.backend.*;
 
 
 class TestTuneInterface {

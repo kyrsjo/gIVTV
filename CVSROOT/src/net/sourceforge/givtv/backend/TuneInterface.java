@@ -1,10 +1,9 @@
-package org.kyrsjo.givtv.backend;
+package net.sourceforge.givtv.backend;
 
 import java.io.*;
 import java.util.*;
 
 //TODO: Add methods/variable for setting the frequency directly
-//TODO: Pointers are returned to calling methods, should be "safed" by providing clones instead.
 
 /**A Java wrapper for ivtv-tune
  * 

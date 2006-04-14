@@ -1,6 +1,7 @@
-package org.kyrsjo.givtv.utils;
+package net.sourceforge.givtv.utils;
 
-import org.kyrsjo.givtv.backend.TuneInterface;
+import net.sourceforge.givtv.backend.TuneInterface;
+
 import java.util.*;
 
 /**Search for TV channels, using the cards built in signal detection facility
