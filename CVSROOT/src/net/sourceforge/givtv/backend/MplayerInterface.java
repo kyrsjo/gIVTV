@@ -9,7 +9,7 @@ import java.io.*;
  */
 public class MplayerInterface {
 	
-	private final	String	mplayercommand = "mplayer";
+	//private final	String	mplayercommand = "mplayer";
 	private 		Process	mplayer;
 	private			BufferedWriter mplayerCommander;
 	
