@@ -14,10 +14,10 @@ import org.gnu.gnome.Program;
  */
 public class Givtv {
 	
-	private TuneInterface			tuner;
-	private MplayerInterface		mplayer;
-	
-	static ChannelMap channelmap;
+	//Has package access
+	TuneInterface			tuner;
+	MplayerInterface		mplayer;
+	ChannelMap channelmap;
 	
 	Givtv(String[] args) {
 		Program.initGnomeUI("gIVTV", version, args);
